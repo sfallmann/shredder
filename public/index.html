@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<script>
+
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source;
+
+  function getData(audioFilePath) {
+    source = audioCtx.createBufferSource();
+    const request = new XMLHttpRequest();
+
+    request.open('GET', audioFilePath, true);
+    request.responseType = 'arraybuffer';
+
+    request.onload = function() {
+      const audioData = request.response;
+
+      audioCtx.decodeAudioData(audioData, function(buffer) {
+          source.buffer = buffer;
+
+          source.connect(audioCtx.destination);
+          source.loop = false;
+        },
+
+        function(e){ console.log("Error with decoding audio data" + e.err); });
+    }
+
+    request.send();
+  }
+
+
+
+  setInterval(function(){
+    const random = Math.floor(Math.random()*4)
+    console.log(random)
+    
+
+    getData(sounds[colorArr[random]]);
+    source.start(0);
+  }, 750);
+
+  //getData();
+  //source.start(0);
+
+</script>
+</body>
+</html>
