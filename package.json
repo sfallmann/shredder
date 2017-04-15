@@ -19,6 +19,7 @@
     "gulp-jasmine-browser": "^1.7.1",
     "gulp-watch": "^4.3.11",
     "jasmine": "^2.5.3",
+    "jasmine-spec-reporter": "^4.0.0",
     "phantomjs": "^2.1.7"
   }
 }
