@@ -1,0 +1,26 @@
+{
+  "name": "simon",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Sean Fallmann <jorundr@hotmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "skeleton": "^2.0.4",
+    "normalize-strings": "normalize#^1.1.0",
+    "jquery": "^3.2.1"
+  },
+  "install": {
+    "path": "public/assets/libs"
+  }  
+}

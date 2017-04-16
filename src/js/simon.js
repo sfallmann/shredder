@@ -1,4 +1,4 @@
-const COLORS = ['BLUE', 'RED', 'GREEN', 'YELLOW'];
+const COLORS = ['blue', 'red', 'green', 'yellow'];
 
 const GAME_LOST = 'GAME_LOST';
 const GAME_WON = 'GAME_WON';
@@ -14,14 +14,14 @@ const NORMAL = 'NORMAL';
 class Simon {
   constructor(config) {
     this.mode = config.mode;
-    this.playerInputCb = config.playerInputCb;
-    this.gameOverCb = config.gameOverCb;
-    this.roundWonCb = config.roundWonCb;
-    this.roundLostCb = config.roundLostCb;
-    this.continueRoundCb = config.continueRoundCb;
-    this.playSound = config.playSound;
+    this.playerInput = config.playerInputCb;
+    this.gameOver = config.gameOverCb;
+    this.roundWon = config.roundWonCb;
+    this.roundLost = config.roundLostCb;
+    this.continueRound = config.continueRoundCb;
+    this.playSound = config.playSoundCb;
     this._count = 0;
-    this._status = CONTINUE;
+    this._status = CONTINUE_GAME;
     this._matches = 0;
     this._pattern = [Simon.getColor()];
   }
@@ -106,50 +106,49 @@ class Simon {
   }
 
   turn() {
-    this.playSequence();
-    this.updateStatus(this.playerInputCb());
+
+    this.updateStatus(this.playerInput());
+    console.log(this._status, this.playerInput(), this.patternColor());
 
     switch (this._status){
       case ROUND_WON:
         this.incrementCount();
         this.resetMatches();
         this.addColorToPattern();
-        this.roundWonCb();
+        this.roundWon();
         return;
       case ROUND_LOST:
-        this.roundLostCb();
+        this.resetMatches();
+        this.roundLost();
         return;
       case CONTINUE_ROUND:
         this.incrementMatches();
-        this.continueRoundCb();
+        this.continueRound();
         return;
       default:
         this.gameOver();
         return;
     }
   }
-
-  playSequence() {
-    this.pattern.forEach((color) => {
-      console.log(color);
-    });
-  }
   gameOver() {
-    this.gameOverCb();
+    this.gameOver();
   }
 }
 
-module.exports = {
-  Simon,
-  COLORS,
-  GAME_LOST,
-  GAME_WON,
-  CONTINUE_GAME,
-  MATCH,
-  NO_MATCH,
-  ROUND_LOST,
-  ROUND_WON,
-  CONTINUE_ROUND,
-  STRICT,
-  NORMAL
-};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    Simon,
+    COLORS,
+    GAME_LOST,
+    GAME_WON,
+    CONTINUE_GAME,
+    MATCH,
+    NO_MATCH,
+    ROUND_LOST,
+    ROUND_WON,
+    CONTINUE_ROUND,
+    STRICT,
+    NORMAL
+  };
+}
+

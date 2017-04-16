@@ -3,55 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<script>
-
-  const SOUNDS = {
-    BLUE: 'audio/blue-sound.mp3',
-    RED: 'audio/red-sound.mp3',
-    GREEN: 'audio/green-sound.mp3',
-    YELLOW: 'audio/yellow-sound.mp3',
-  }
-
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const source;
-
-  function getSound(audioFilePath) {
-    source = audioCtx.createBufferSource();
-    const request = new XMLHttpRequest();
-
-    request.open('GET', audioFilePath, true);
-    request.responseType = 'arraybuffer';
-
-    request.onload = function() {
-      const audioData = request.response;
-
-      audioCtx.decodeAudioData(audioData, function(buffer) {
-          source.buffer = buffer;
-
-          source.connect(audioCtx.destination);
-          source.loop = false;
-        },
-
-        function(e){ console.log("Error with decoding audio data" + e.err); });
+  <link href="assets/libs/skeleton/skeleton.css" rel="stylesheet"/>
+  <style>
+    body * {
+      border: 1px solid black;
     }
 
-    request.send();
-  }
+    .blue {
+      background-color: blue;
+    }
 
-  setInterval(function(){
-    const random = Math.floor(Math.random()*4)
-    console.log(random)
-    
+    .red {
+      background-color: red;
+    }
 
-    getSound(sounds[colorArr[random]]);
-    source.start(0);
-  }, 750);
+    .green {
+      background-color: green;
+    }
 
-  //getData();
-  //source.start(0);
+    .yellow {
+      background-color: yellow;
+    }        
 
-</script>
+    .nocolor {
+      background-color: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="row">
+      <div id="blue" class="three columns">
+        <input id="blueBtn" type="button" value="Blue Sound">
+      </div>
+      <div id="red" class="three columns">
+        <input id="redBtn" type="button" value="Red Sound">
+      </div>
+      <div id="green" class="three columns">
+        <input id="greenBtn" type="button" value="Green Sound">
+      </div>
+      <div id="yellow" class="three columns">
+        <input id="yellowBtn" type="button" value="Yellow Sound">
+      </div>                        
+    </div>
+  </header>
+  <script src="assets/libs/howler.js/howler.js"></script>
+  <script src="assets/libs/jquery/jquery.js"></script>
+  <script src="assets/js/simon.js"></script>  
+  <script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@ const {
   CONTINUE_ROUND,
   STRICT,
   NORMAL
-} = require('../src/js/game');
+} = require('../public/assets/js/simon');
 
 describe('Simon', function() {
 
@@ -73,15 +73,15 @@ describe('Simon', function() {
     it('getStatus() should return GAME_LOST in strict mode if checkForColor() returns NO_MATCH', function() {
       const game = new Simon(strictConfig);
       selectedColor = 'NOT_THE_COLOR';
-      expect(game.checkForMatch(game.playerInputCb())).toEqual(NO_MATCH);
-      game.updateStatus(game.playerInputCb());
+      expect(game.checkForMatch(game.playerInput())).toEqual(NO_MATCH);
+      game.updateStatus(game.playerInput());
       expect(game.getStatus()).toEqual(GAME_LOST);
     });
     it('getStatus() should return ROUND_LOST in normal mode if checkForColor() returns NO_MATCH', function() {
       const game = new Simon(normalConfig);
       selectedColor = 'NOT_THE_COLOR';
-      expect(game.checkForMatch(game.playerInputCb())).toEqual(NO_MATCH);
-      game.updateStatus(game.playerInputCb());
+      expect(game.checkForMatch(game.playerInput())).toEqual(NO_MATCH);
+      game.updateStatus(game.playerInput());
       expect(game.getStatus()).toEqual(ROUND_LOST);
     });
     it('getStatus() should return CONTINUE_ROUND if checkForColor() returns MATCH and there are more colors in the pattern', function() {
@@ -89,13 +89,13 @@ describe('Simon', function() {
       selectedColor = game.patternColor();
       game.addColorToPattern();
       game.incrementCount();
-      game.updateStatus(game.playerInputCb());
+      game.updateStatus(game.playerInput());
       expect(game.getStatus()).toEqual(CONTINUE_ROUND);
     });
     it('getStatus() should return ROUND_WON if checkForColor() returns MATCH and there are no more colors to match', function() {
       const game = new Simon(normalConfig);
       selectedColor = game.patternColor();
-      game.updateStatus(game.playerInputCb());
+      game.updateStatus(game.playerInput());
       expect(game.getStatus()).toEqual(ROUND_WON);
     });
 
