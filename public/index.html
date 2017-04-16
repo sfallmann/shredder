@@ -10,41 +10,75 @@
     }
 
     .blue {
-      background-color: blue;
+      background-color: #0000FF;
+    }
+
+    .lightblue {
+      background-color: #ADD8E6;
     }
 
     .red {
-      background-color: red;
+      background-color: #FF0000;
+    }
+    
+    .lightred {
+      background-color: #FFA07A;
     }
 
     .green {
-      background-color: green;
+      background-color: #008000;
+    }
+
+    .lightgreen {
+      background-color: #90EE90;
     }
 
     .yellow {
-      background-color: yellow;
+      background-color: #FFFF00;
     }        
 
+    .lightyellow {
+      background-color: #FFFFE0;
+    }      
+
     .nocolor {
-      background-color: none;
+      opacity: .5;
     }
+
+    .color {
+      height: 200px;
+      width: 100%;
+    }
+
+    #messages {
+      height: 100px;
+      text-align: center;
+    }
+
   </style>
 </head>
 <body>
   <header class="container">
     <div class="row">
-      <div id="blue" class="three columns">
-        <input id="blueBtn" type="button" value="Blue Sound">
+      <div class="two columns">Count: <div id="count">--</div></div>
+      <div id="messages" class="ten columns"></div>
+    </div>
+    <div class="row">
+      <div id="blue-btn" data-color="blue" class="three columns blue color"></div>  
+      <div id="red-btn" data-color="red" class="three columns red color"></div>
+      <div id="green-btn" data-color="green" class="three columns green color"></div>
+      <div id="yellow-btn" data-color="yellow" class="three columns yellow color"></div>                        
+    </div>
+    <div class="row">
+      <div class="four columns">
+        <label>On <input type="checkbox" name="on"></label>
       </div>
-      <div id="red" class="three columns">
-        <input id="redBtn" type="button" value="Red Sound">
+      <div class="four columns">
+        <label>Strict <input type="checkbox" name="strict"></label>
       </div>
-      <div id="green" class="three columns">
-        <input id="greenBtn" type="button" value="Green Sound">
-      </div>
-      <div id="yellow" class="three columns">
-        <input id="yellowBtn" type="button" value="Yellow Sound">
-      </div>                        
+      <div class="four columns">
+        <input type="button" id="start" value="Start!">
+      </div>            
     </div>
   </header>
   <script src="assets/libs/howler.js/howler.js"></script>

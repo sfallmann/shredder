@@ -18,23 +18,26 @@ var STRICT = 'STRICT';
 var NORMAL = 'NORMAL';
 
 var Simon = function () {
-  function Simon(config) {
+  function Simon() {
     _classCallCheck(this, Simon);
-
-    this.mode = config.mode;
-    this.playerInput = config.playerInputCb;
-    this.gameOver = config.gameOverCb;
-    this.roundWon = config.roundWonCb;
-    this.roundLost = config.roundLostCb;
-    this.continueRound = config.continueRoundCb;
-    this.playSound = config.playSoundCb;
-    this._count = 0;
-    this._status = CONTINUE_GAME;
-    this._matches = 0;
-    this._pattern = [Simon.getColor()];
   }
 
   _createClass(Simon, [{
+    key: 'init',
+    value: function init(config) {
+      this.mode = config.mode;
+      this.playerInput = config.playerInputCb;
+      this.gameOver = config.gameOverCb;
+      this.roundWon = config.roundWonCb;
+      this.roundLost = config.roundLostCb;
+      this.continueRound = config.continueRoundCb;
+      this.playSound = config.playSoundCb;
+      this._count = 0;
+      this._status = '';
+      this._matches = 0;
+      this._pattern = [Simon.getColor()];
+    }
+  }, {
     key: 'incrementCount',
     value: function incrementCount() {
       this._count++;
@@ -137,7 +140,7 @@ var Simon = function () {
           this.continueRound();
           return;
         default:
-          this.gameOver();
+          this.gameOver(this.getStatus());
           return;
       }
     }
