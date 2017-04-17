@@ -30,7 +30,7 @@ const sound = {
         cb();
       }
     });
-
+    toggleLight(key);
     this._audioFiles[key].play();
 
   },
@@ -152,10 +152,20 @@ function roundLostCb() {
 
 function gameOverCb(status) {
   removeClickable();
-  sound.play(clickedColor, function() {
-    $messages.text('Game over! ' + status);
-    console.log('game-over!', status);
-  });
+  const msg = 'Game over! ' + status + ': Starting new game';
+  console.log('game-over!', status);
+  if (status === GAME_WON){
+    sound.play(clickedColor, function() {
+      $messages.text(msg);
+      $('#start').trigger('click');
+    });
+  } else {
+    sound.play('mistake', function() {
+      $messages.text(msg);
+      $('#start').trigger('click');
+    });
+  }
+
 }
 
 function delaySequence(pattern, startDelay, seqDelay){
