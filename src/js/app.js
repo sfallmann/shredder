@@ -1,38 +1,34 @@
+
+const game = new Simon();
+let clickedColor;
+let clickCheck;
+
 const sound = {
   _audioFiles: {
-    blue: new Howl({ src: ['assets/audio/blue-sound.mp3'] }),
-    red: new Howl({ src: ['assets/audio/red-sound.mp3'] }),
-    green: new Howl({ src: ['assets/audio/green-sound.mp3'] }),
-    yellow: new Howl({ src: ['assets/audio/yellow-sound.mp3'] }),
-    mistake: new Howl({ src: ['assets/audio/mistake-sound.mp3'] })
+    blue: new Howl({
+      src: ['assets/audio/blue-sound.mp3']
+    }),
+    red: new Howl({
+      src: ['assets/audio/red-sound.mp3']
+    }),
+    green: new Howl({
+      src: ['assets/audio/green-sound.mp3']
+    }),
+    yellow: new Howl({
+      src: ['assets/audio/yellow-sound.mp3']
+    }),
+    mistake: new Howl({
+      src: ['assets/audio/mistake-sound.mp3']
+    })
   },
-  play: function play(key) {
+  play: function play(key, cb) {
 
-    const args = [].slice.call(arguments);
-
-    this._audioFiles[key].once('play', () => {
-      toggleLight(key);
-
-      if (typeof args[1] === 'function') {
-        args[1]();
-      }
-
-    });
-    this._audioFiles[key].once('stop', () => {
-      toggleLight(key);
-
-      if (typeof args[2] === 'function') {
-        args[2]();
-      }
-
-    });
     this._audioFiles[key].once('end', () => {
       toggleLight(key);
 
-      if (typeof args[3] === 'function') {
-        args[3]();
+      if (typeof cb === 'function') {
+        cb();
       }
-
     });
 
     this._audioFiles[key].play();
@@ -41,11 +37,8 @@ const sound = {
   stop: function stop(key) {
     this._audioFiles[key].stop();
   }
-}
+};
 
-
-let clickedColor;
-let clickCheck;
 var timeouts = {
   ids: [],
   clearAll: function clearAll(){
@@ -66,6 +59,14 @@ var timeouts = {
 
 const $messages = $('#messages');
 
+function gameMode() {
+  if ($('[name=strict]').is(':checked')) {
+    return 'STRICT';
+  }
+
+  return 'NORMAL';
+}
+
 function addClickable() {
   $('[id*="-btn"]').addClass('clickable');
 }
@@ -74,12 +75,8 @@ function removeClickable() {
   $('.clickable').removeClass('clickable');
 }
 
-function gameMode() {
-  if ($('[name=strict]').is(':checked')) {
-    return 'STRICT';
-  }
-
-  return 'NORMAL';
+function toggleLight(color) {
+  $('#' + color + '-btn').toggleClass(color).toggleClass('light' + color);
 }
 
 function updateCount(count) {
@@ -90,6 +87,7 @@ $('#start').click(() => {
 
   const config = {
     mode: gameMode(),
+    maxTurns: 3,
     playerInputCb,
     gameOverCb,
     roundLostCb,
@@ -106,10 +104,9 @@ $('#start').click(() => {
 
 $('[id*="-btn"]').click(function() {
   if ($(this).hasClass('clickable')) {
+    removeClickable();
     clickedColor = $(this).data('color');
     timeouts.clearAll();
-    console.log(clickCheck, 'clickCheck cleared')
-    console.log('clicked', clickedColor);
     game.turn();
   }
 });
@@ -118,15 +115,18 @@ function playerInputCb() {
   return clickedColor;
 }
 
-function gameOverCb(status) {
-  $messages.text('Game over! ' + status);
-  console.log('game-over!', status);
+function continueRoundCb() {
+  sound.play(clickedColor, function() {
+    $messages.text('Keep going!');
+    addClickable();
+    trackPlayerResponse();
+    clickedColor = '';
+  });
 }
 
 function roundWonCb() {
-  removeClickable();
-  timeouts.clearAll();
-  sound.play(clickedColor, null, null, function() {
+  sound.play(clickedColor, function() {
+    timeouts.clearAll();
     clickedColor = '';
     updateCount(game.count());
     $messages.text('You did it! Here\'s a new sequence');
@@ -139,38 +139,36 @@ function roundLostCb() {
   removeClickable();
   timeouts.clearAll();
   console.log('playerInput', game.playerInput(), 'clickedColor', clickedColor);
-  if (game.playerInput()){
+  if (game.playerInput()) {
     $messages.text('You made a mistake! Lets\'s play the sequence again');
   } else {
     $messages.text('You didn\'t click anything!');
   }
-
-  sound.play('mistake', null, null, function() {
+  sound.play('mistake', function() {
     delaySequence(game.pattern(), 250, 500);
     console.log('round-lost');
   });
 }
 
-function continueRoundCb() {
+function gameOverCb(status) {
   removeClickable();
-  $messages.text('Keep going!');
-  sound.play(clickedColor, null, null, function() {
-    addClickable();
-    trackPlayerResponse();
-    clickedColor = '';
-    console.log('continue-round');
+  sound.play(clickedColor, function() {
+    $messages.text('Game over! ' + status);
+    console.log('game-over!', status);
   });
 }
 
-function toggleLight(color) {
-  $('#' + color + '-btn').toggleClass(color).toggleClass('light' + color);
+function delaySequence(pattern, startDelay, seqDelay){
+  setTimeout(() => {
+    playSequence(game.pattern(), seqDelay);
+  }, startDelay);
 }
 
 function playSequence(pattern, delay) {
 
   if (pattern.length) {
     const color = pattern.shift();
-    sound.play(color, null, null, function() {
+    sound.play(color, function() {
       timeouts.ids.push(setTimeout(() => {
         playSequence(pattern, delay);
       }, delay));
@@ -183,21 +181,11 @@ function playSequence(pattern, delay) {
 
 }
 
-function trackPlayerResponse(){
+function trackPlayerResponse() {
   timeouts.ids.push(setTimeout(() => {
-    console.log('Nothing clicked in 2 seconds!');
+    console.log('Nothing clicked in 5 seconds!');
     game.turn();
   }, 5000));
   clickCheck = timeouts.ids[timeouts.ids.length - 1];
-  console.log('click check', clickCheck)
+  console.log('click check', clickCheck);
 }
-
-
-const game = new Simon();
-
-function delaySequence(pattern, startDelay, seqDelay){
-  setTimeout(() => {
-    playSequence(game.pattern(), seqDelay);
-  }, startDelay);
-}
-

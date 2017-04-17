@@ -17,7 +17,7 @@ var CONTINUE_ROUND = 'CONTINUE_ROUND';
 var STRICT = 'STRICT';
 var NORMAL = 'NORMAL';
 
-var Simon = function() {
+var Simon = function () {
   function Simon() {
     _classCallCheck(this, Simon);
   }
@@ -25,6 +25,7 @@ var Simon = function() {
   _createClass(Simon, [{
     key: 'init',
     value: function init(config) {
+      this.maxTurns = config.maxTurns;
       this.mode = config.mode;
       this.playerInput = config.playerInputCb;
       this.gameOver = config.gameOverCb;
@@ -99,14 +100,12 @@ var Simon = function() {
       var match = this.checkForMatch(playerInput);
 
       if (match === MATCH) {
-
-        if (this.matches() === this.count() && this.count() < 20) {
+        if (this.matches() === this.count() && this.count() < this.maxTurns) {
           this._status = ROUND_WON;
         } else {
           this._status = CONTINUE_ROUND;
         }
-
-        if (this.count() === 20) {
+        if (this.count() === this.maxTurns - 1 && this._status === ROUND_WON) {
           this._status = GAME_WON;
         }
       } else {
@@ -143,11 +142,6 @@ var Simon = function() {
           this.gameOver(this.getStatus());
           return;
       }
-    }
-  }, {
-    key: 'gameOver',
-    value: function gameOver() {
-      this.gameOver();
     }
   }], [{
     key: 'getColor',

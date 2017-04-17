@@ -14,6 +14,7 @@ const NORMAL = 'NORMAL';
 class Simon {
 
   init(config) {
+    this.maxTurns = config.maxTurns;
     this.mode = config.mode;
     this.playerInput = config.playerInputCb;
     this.gameOver = config.gameOverCb;
@@ -87,14 +88,12 @@ class Simon {
     const match = this.checkForMatch(playerInput);
 
     if (match === MATCH) {
-
-      if (this.matches() === this.count() && this.count() < 20) {
+      if (this.matches() === this.count() && this.count() < (this.maxTurns)) {
         this._status = ROUND_WON;
       } else {
         this._status = CONTINUE_ROUND;
       }
-
-      if (this.count() === 20) {
+      if (this.count() === (this.maxTurns - 1) && this._status === ROUND_WON) {
         this._status = (GAME_WON);
       }
     } else {
@@ -130,9 +129,6 @@ class Simon {
         this.gameOver(this.getStatus());
         return;
     }
-  }
-  gameOver() {
-    this.gameOver();
   }
 }
 
