@@ -61,10 +61,10 @@ const $messages = $('#messages');
 
 function gameMode() {
   if ($('[name=strict]').is(':checked')) {
-    return 'STRICT';
+    return STRICT;
   }
 
-  return 'NORMAL';
+  return NORMAL;
 }
 
 function addClickable() {
