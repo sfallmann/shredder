@@ -17,7 +17,7 @@ var CONTINUE_ROUND = 'CONTINUE_ROUND';
 var STRICT = 'STRICT';
 var NORMAL = 'NORMAL';
 
-var Simon = function () {
+var Simon = function() {
   function Simon() {
     _classCallCheck(this, Simon);
   }

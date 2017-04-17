@@ -57,6 +57,7 @@ var timeouts = {
   clear: function clear(id) {
     const index = this.ids.indexOf(id);
     if (index > -1){
+      console.log(this.ids[index], clickCheck);
       clearTimeout(id);
       this.ids.splice(index, 1);
     }
@@ -82,7 +83,7 @@ function gameMode() {
 }
 
 function updateCount(count) {
-  $('#count').text(count);
+  $('#count').text(count + 1);
 }
 
 $('#start').click(() => {
@@ -100,19 +101,17 @@ $('#start').click(() => {
   timeouts.clearAll();
   removeClickable();
   updateCount(game.count());
-  delaySequence(game.pattern(), 500, 2000);
+  delaySequence(game.pattern(), 250, 350);
 })
 
 $('[id*="-btn"]').click(function() {
   if ($(this).hasClass('clickable')) {
     clickedColor = $(this).data('color');
-    timeouts.clear(clickCheck);
+    timeouts.clearAll();
+    console.log(clickCheck, 'clickCheck cleared')
     console.log('clicked', clickedColor);
-    sound.play(clickedColor);
-    removeClickable();
     game.turn();
   }
-
 });
 
 function playerInputCb() {
@@ -125,34 +124,42 @@ function gameOverCb(status) {
 }
 
 function roundWonCb() {
-
-  clickedColor = '';
-  updateCount(game.count());
-  $messages.text('You did it! Here\'s a new sequence');
-  delaySequence(game.pattern(), 1000, 2000);
-  console.log('round-won');
+  removeClickable();
+  timeouts.clearAll();
+  sound.play(clickedColor, null, null, function() {
+    clickedColor = '';
+    updateCount(game.count());
+    $messages.text('You did it! Here\'s a new sequence');
+    console.log('round-won');
+    delaySequence(game.pattern(), 250, 350);
+  });
 }
 
 function roundLostCb() {
-
-  if (clickedColor) {
-    sound.stop(clickedColor);
-    clickedColor = '';
+  removeClickable();
+  timeouts.clearAll();
+  console.log('playerInput', game.playerInput(), 'clickedColor', clickedColor);
+  if (game.playerInput()){
+    $messages.text('You made a mistake! Lets\'s play the sequence again');
+  } else {
+    $messages.text('You didn\'t click anything!');
   }
-  $messages.text('You made a mistake! Lets\'s play the sequence again');
+
   sound.play('mistake', null, null, function() {
-    delaySequence(game.pattern(), 1000, 2000);
+    delaySequence(game.pattern(), 250, 500);
     console.log('round-lost');
   });
 }
 
 function continueRoundCb() {
-
-  trackPlayerResponse();
-  addClickable();
+  removeClickable();
   $messages.text('Keep going!');
-  clickedColor = '';
-  console.log('continue-round');
+  sound.play(clickedColor, null, null, function() {
+    addClickable();
+    trackPlayerResponse();
+    clickedColor = '';
+    console.log('continue-round');
+  });
 }
 
 function toggleLight(color) {
@@ -163,7 +170,6 @@ function playSequence(pattern, delay) {
 
   if (pattern.length) {
     const color = pattern.shift();
-
     sound.play(color, null, null, function() {
       timeouts.ids.push(setTimeout(() => {
         playSequence(pattern, delay);
@@ -171,7 +177,6 @@ function playSequence(pattern, delay) {
     });
 
   } else {
-    console.log('done with pattern!');
     addClickable();
     trackPlayerResponse();
   }
@@ -182,7 +187,7 @@ function trackPlayerResponse(){
   timeouts.ids.push(setTimeout(() => {
     console.log('Nothing clicked in 2 seconds!');
     game.turn();
-  }, 2000));
+  }, 5000));
   clickCheck = timeouts.ids[timeouts.ids.length - 1];
   console.log('click check', clickCheck)
 }
