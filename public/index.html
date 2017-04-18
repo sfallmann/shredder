@@ -3,15 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=New+Rocker|Play" rel="stylesheet">  
   <link href="assets/libs/skeleton/skeleton.css" rel="stylesheet"/>
   <style>
     body {
       color: white;
-      background-color: black;
-    }
+      background: linear-gradient(140deg, #000000, #05614a, #203c35, #000000, #5e60aa, #875f43) fixed;
+      background-size: 2000% 2000%;
 
+      -webkit-animation: colorSwirl 22s ease infinite;
+      -moz-animation: colorSwirl 22s ease infinite;
+      -o-animation: colorSwirl 22s ease infinite;
+      animation: colorSwirl 22s ease infinite;
+    }
+    @-webkit-keyframes colorSwirl {
+        0%{background-position:29% 0%}
+        50%{background-position:72% 100%}
+        100%{background-position:29% 0%}
+    }
+    @-moz-keyframes colorSwirl {
+        0%{background-position:29% 0%}
+        50%{background-position:72% 100%}
+        100%{background-position:29% 0%}
+    }
+    @-o-keyframes colorSwirl {
+        0%{background-position:29% 0%}
+        50%{background-position:72% 100%}
+        100%{background-position:29% 0%}
+    }
+    @keyframes colorSwirl { 
+        0%{background-position:29% 0%}
+        50%{background-position:72% 100%}
+        100%{background-position:29% 0%}
+    }
     body * {
      /* border: 1px solid white; */
+     overflow: hidden;
     }
 
     .hide {
@@ -84,6 +111,23 @@
       position: relative;
     }
 
+    .simon {
+      font-family: 'Play', sans-serif;
+      font-weight: bold;
+    }
+
+    .metal {
+      font-family: 'New Rocker', cursive;
+    }
+
+    #play-game-pick svg{
+      width: 150px;
+    }
+
+    #pick {
+      fill: #d12d2b;
+    }
+
     #play-game-pick svg:hover {
       cursor: pointer;
     }
@@ -111,19 +155,16 @@
       <div id="logo" class="twelve columns">
       </div>
       <div id="by-line" class="twelve columns center-text">
-        <h2>A "metal" version of Simon by Sean Fallmann</h2>
+        <h3>A <span class="metal">METAL</span> version of <span class="simon">SIMON</span></h3>
+        <h4>by Sean Fallmann</h4>
         <div id="play-game-pick">
-          <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 200 200">
           <g>
             <title>Start Game</title>
-            <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
-          </g>
-          <g>
-            <title>Start Game</title>
-            <g id="svg_1" stroke="white" fill="#ffffff" transform="translate(0,200) scale(0.10000000149011612,-0.10000000149011612) ">
-            <path id="svg_2" d="m765,1899c-244,-36 -442,-139 -528,-276c-15,-23 -36,-70 -48,-105c-59,-175 26,-533 211,-885c91,-174 165,-279 275,-388c135,-135 201,-170 325,-170c78,0 92,3 156,35c95,48 238,190 330,330c130,196 241,442 306,675c29,107 33,134 33,251l0,130l-37,75c-43,84 -62,108 -139,170c-94,76 -247,133 -424,159c-84,12 -376,11 -460,-1zm382,-69c349,-31 557,-167 603,-393c38,-186 -116,-635 -327,-955c-73,-110 -230,-270 -298,-303c-71,-34 -180,-34 -250,0c-68,33 -226,194 -299,304c-209,318 -362,763 -327,950c33,180 182,312 416,368c149,35 309,45 482,29z"/>
+            <g id="pick" stroke="white" fill="#ffffff" transform="translate(0,200) scale(0.10000000149011612,-0.10000000149011612) ">
+            <path id="pick-shape" d="m765,1899c-244,-36 -442,-139 -528,-276c-15,-23 -36,-70 -48,-105c-59,-175 26,-533 211,-885c91,-174 165,-279 275,-388c135,-135 201,-170 325,-170c78,0 92,3 156,35c95,48 238,190 330,330c130,196 241,442 306,675c29,107 33,134 33,251l0,130l-37,75c-43,84 -62,108 -139,170c-94,76 -247,133 -424,159c-84,12 -376,11 -460,-1zm382,-69c349,-31 557,-167 603,-393c38,-186 -116,-635 -327,-955c-73,-110 -230,-270 -298,-303c-71,-34 -180,-34 -250,0c-68,33 -226,194 -299,304c-209,318 -362,763 -327,950c33,180 182,312 416,368c149,35 309,45 482,29z"/>
             </g>
-            <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_3" y="80.5" x="38.63281" stroke-width="0" stroke="#000" fill="#ffffff">Play Game</text>
+            <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="pick-text" y="80.5" x="38.63281" stroke-width="0" stroke="#000" fill="#ffffff">Play Game</text>
           </g>
           </svg>      
         </div>
@@ -169,8 +210,8 @@
       title: {
         load: function load(){
           var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
-          var vaiShred = new Howl({src: ['assets/audio/vai-style-shred.mp3'], preload: true, loop: true});
-          $.get('assets/img/shredder-logo.svg', function(doc) {
+          var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});
+          $.get('assets/img/shredder-logo-2.svg', function(doc) {
             $('#logo').html($(doc.querySelector('svg')));
             var $logo = $('#logo-text');  
             var $logoPaths = $('#logo-text path');
@@ -212,7 +253,6 @@
                 this.timeline.restart();
               }
             }
-            console.log($logoPaths)
             logoAnimation.init();
             logoAnimation.play();
             vaiShred.seek(2).play();
