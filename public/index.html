@@ -224,7 +224,7 @@
     soundRegistry.sounds.push(thudSound);
     soundRegistry.sounds.push(vaiShred);
 
-    $('#audio-control').on("click touchstart", function() {
+    $('#audio-control').on("click", function() {
       soundRegistry.muteStatus = !soundRegistry.muteStatus;
 
       if (soundRegistry.muteStatus){
