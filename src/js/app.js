@@ -2,6 +2,7 @@
 const game = new Simon();
 let clickedColor;
 let clickCheck;
+const speed = 500;
 
 const sound = {
   _audioFiles: {
@@ -99,7 +100,7 @@ $('#start').click(() => {
   timeouts.clearAll();
   removeClickable();
   updateCount(game.count());
-  delaySequence(game.pattern(), 250, 350);
+  delaySequence(game.pattern(), 250, speed - (game.count() * 20));
 })
 
 $('[id*="-btn"]').click(function() {
@@ -131,7 +132,8 @@ function roundWonCb() {
     updateCount(game.count());
     $messages.text('You did it! Here\'s a new sequence');
     console.log('round-won');
-    delaySequence(game.pattern(), 250, 350);
+
+    delaySequence(game.pattern(), 250, speed - (game.count() * 20));
   });
 }
 
@@ -154,14 +156,16 @@ function gameOverCb(status) {
   removeClickable();
   const msg = 'Game over! ' + status + ': Starting new game';
   console.log('game-over!', status);
-  if (status === GAME_WON){
+  if (status === GAME_WON) {
     sound.play(clickedColor, function() {
       $messages.text(msg);
+      alert('starting a new game');
       $('#start').trigger('click');
     });
   } else {
     sound.play('mistake', function() {
       $messages.text(msg);
+      alert('starting a new game');
       $('#start').trigger('click');
     });
   }
@@ -175,7 +179,7 @@ function delaySequence(pattern, startDelay, seqDelay){
 }
 
 function playSequence(pattern, delay) {
-
+  console.log('sequence delay: ', delay);
   if (pattern.length) {
     const color = pattern.shift();
     sound.play(color, function() {

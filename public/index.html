@@ -5,8 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="assets/libs/skeleton/skeleton.css" rel="stylesheet"/>
   <style>
+    body {
+      color: white;
+      background-color: black;
+    }
+
     body * {
-      border: 1px solid black;
+     /* border: 1px solid white; */
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .center-text {
+      text-align: center;
     }
 
     .blue {
@@ -58,6 +71,33 @@
       border: 4px solid lightgrey;
     }
 
+    #shredder-logo { 
+      width: 100%;
+      margin: auto;
+      fill: #d12d2b;
+      fill-opacity: 0;
+      stroke:#ffffff;      
+      stroke-width: 1;
+      stroke-miterlimit: 4;
+      stroke-dasharray: 1000;
+      stroke-opacity: 0;
+      position: relative;
+    }
+
+    #play-game-pick svg:hover {
+      cursor: pointer;
+    }
+
+    #by-line {
+      color: white;
+      opacity: 0;
+    }
+
+    #game-main {
+      display: none;
+      opacity: 0;
+    }
+
     #messages {
       height: 100px;
       text-align: center;
@@ -66,7 +106,37 @@
   </style>
 </head>
 <body>
-  <header class="container">
+  <section id="game-title" class="container">
+    <div class="row">
+      <div id="logo" class="twelve columns">
+      </div>
+      <div id="by-line" class="twelve columns center-text">
+        <h2>A "metal" version of Simon by Sean Fallmann</h2>
+        <div id="play-game-pick">
+          <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <g>
+            <title>Start Game</title>
+            <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+          </g>
+          <g>
+            <title>Start Game</title>
+            <g id="svg_1" stroke="white" fill="#ffffff" transform="translate(0,200) scale(0.10000000149011612,-0.10000000149011612) ">
+            <path id="svg_2" d="m765,1899c-244,-36 -442,-139 -528,-276c-15,-23 -36,-70 -48,-105c-59,-175 26,-533 211,-885c91,-174 165,-279 275,-388c135,-135 201,-170 325,-170c78,0 92,3 156,35c95,48 238,190 330,330c130,196 241,442 306,675c29,107 33,134 33,251l0,130l-37,75c-43,84 -62,108 -139,170c-94,76 -247,133 -424,159c-84,12 -376,11 -460,-1zm382,-69c349,-31 557,-167 603,-393c38,-186 -116,-635 -327,-955c-73,-110 -230,-270 -298,-303c-71,-34 -180,-34 -250,0c-68,33 -226,194 -299,304c-209,318 -362,763 -327,950c33,180 182,312 416,368c149,35 309,45 482,29z"/>
+            </g>
+            <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_3" y="80.5" x="38.63281" stroke-width="0" stroke="#000" fill="#ffffff">Play Game</text>
+          </g>
+          </svg>      
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one column"></div>
+      <div class="ten columns">
+      </div>
+      <div class="one column"></div>
+    </div>
+  </section>
+  <section id="game-main"class="container">
     <div class="row">
       <div class="two columns">Count: <div id="count">--</div></div>
       <div id="messages" class="ten columns"></div>
@@ -88,10 +158,78 @@
         <input type="button" id="start" value="Start!">
       </div>            
     </div>
-  </header>
+  </section>
   <script src="assets/libs/howler.js/howler.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
   <script src="assets/libs/jquery/jquery.js"></script>
   <script src="assets/js/simon.js"></script>  
   <script src="assets/js/app.js"></script>
+  <script>
+    var gameScreens = {
+      title: {
+        load: function load(){
+          var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
+          var vaiShred = new Howl({src: ['assets/audio/vai-style-shred.mp3'], preload: true, loop: true});
+          $.get('assets/img/shredder-logo.svg', function(doc) {
+            $('#logo').html($(doc.querySelector('svg')));
+            var $logo = $('#logo-text');  
+            var $logoPaths = $('#logo-text path');
+            var $shred = $logoPaths.slice(0,5);
+            var $der = $logoPaths.slice(5);
+            var $playGame = $('#play-game-pick svg');
+            var pickAnimation = TweenMax.to($playGame, 3, {rotationY:360, ease:Linear.easeNone, repeat:-1});
+
+            $playGame.on('click', function() {
+              pickAnimation.pause();
+              logoAnimation.pause();
+              vaiShred.stop();
+              TweenMax.to('#game-title', 2, {opacity: 0, display: 'none'});
+              TweenMax.to('#game-main', 2, {opacity: 1, display: 'block', delay:2.5});
+            })
+
+            var logoAnimation = {
+              timeline: new TimelineMax(),
+              init: function init() {
+                this.timeline.add(TweenMax.to($shred, 0, {"stroke-opacity": 1, "fill-opacity": 1}));
+                this.timeline.add(TweenMax.from($shred, .3, {y:-60}));
+                this.timeline.add(TweenMax.to($shred, .05, {y:-2}));
+                this.timeline.add(TweenMax.to($shred, .05, {y:0}));
+                this.timeline.add(TweenMax.to($shred, .05, {y:-1}));
+                this.timeline.add(TweenMax.to($shred, .05, {y:0}));     
+                this.timeline.add(TweenMax.to($der, .1, {"stroke-opacity": 1, "fill-opacity": 1})); 
+                this.timeline.add(TweenMax.from($der, .5, {y:-200,scale:6}));
+                this.timeline.add(TweenMax.to($('#by-line'), 1, {opacity: 1, delay: 1}));   
+                this.timeline.add(TweenMax.to($logoPaths, .6, {scale:1.035, repeat:-1, yoyo: true, delay: -.75}));
+                this.timeline.pause();          
+              },
+              play: function play() {
+                this.timeline.play();
+              },
+              pause: function pause() {
+                this.timeline.pause();
+              },              
+              restart: function restart() {
+                this.timeline.restart();
+              }
+            }
+            console.log($logoPaths)
+            logoAnimation.init();
+            logoAnimation.play();
+            vaiShred.seek(2).play();
+            vaiShred.on('end', function() {
+              thudSound.play();
+              vaiShred.seek(2);
+              logoAnimation.restart();
+            });      
+            thudSound.play();
+          });
+        }
+      }
+    };
+    
+    gameScreens.title.load();
+
+
+  </script>
 </body>
 </html>
