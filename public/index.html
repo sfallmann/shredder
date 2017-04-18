@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shredder | A metal version of SIMON</title>
   <link href="https://fonts.googleapis.com/css?family=New+Rocker|Play" rel="stylesheet">  
   <link href="assets/libs/skeleton/skeleton.css" rel="stylesheet"/>
   <style>
@@ -75,6 +76,17 @@
     .clickable {
       border: 4px solid lightgrey;
     }
+    #audio-control {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+
+    #audio-control:hover {
+      cursor: pointer;
+    }
 
     #game-title {
       position: absolute;
@@ -136,6 +148,9 @@
   </style>
 </head>
 <body>
+  <header>
+    <img id="audio-control" src="assets/img/audio-on.svg" alt="Audio On"/>
+  </header>
   <section id="game-title" class="container">
     <div class="row">
       <div id="logo" class="twelve columns">
@@ -164,7 +179,7 @@
       <div class="one column"></div>
     </div>
   </section>
-  <section id="game-main"class="container">
+  <section id="game-main" class="container">
     <div class="row">
       <div class="two columns">Count: <div id="count">--</div></div>
       <div id="messages" class="ten columns"></div>
@@ -193,11 +208,41 @@
   <script src="assets/js/simon.js"></script>  
   <script src="assets/js/app.js"></script>
   <script>
+
+    var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
+    var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});    
+
+    var soundRegistry = {
+      sounds: [],
+      mute: function mute(value) {
+        Howler.mute(value);
+      },
+      muteStatus: false
+    };
+
+    soundRegistry.sounds.push(thudSound);
+    soundRegistry.sounds.push(vaiShred);
+
+    $('#audio-control').on("click", function() {
+      soundRegistry.muteStatus = !soundRegistry.muteStatus;
+
+      if (soundRegistry.muteStatus){
+        $(this).attr('src','assets/img/audio-off.svg');
+      } else {
+        $(this).attr('src','assets/img/audio-on.svg');
+      }
+
+      soundRegistry.mute(soundRegistry.muteStatus);
+      
+    });
+
+
     var gameScreens = {
       title: {
         load: function load(){
-          var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
-          var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});
+
+
+
           $.get('assets/img/shredder-logo-2.svg', function(doc) {
             $('#logo').html($(doc.querySelector('svg')));
             var $logo = $('#logo-text');  
