@@ -98,6 +98,13 @@
       border: 4px solid lightgrey;
     }
 
+    #game-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
     #shredder-logo { 
       width: 100%;
       margin: auto;
@@ -109,6 +116,7 @@
       stroke-dasharray: 1000;
       stroke-opacity: 0;
       position: relative;
+      padding-top: 75px;
     }
 
     .simon {
@@ -121,7 +129,7 @@
     }
 
     #play-game-pick svg{
-      width: 150px;
+      width: 125px;
     }
 
     #pick {
@@ -155,7 +163,8 @@
       <div id="logo" class="twelve columns">
       </div>
       <div id="by-line" class="twelve columns center-text">
-        <h3>A <span class="metal">METAL</span> version of <span class="simon">SIMON</span></h3>
+        <h4>A <span class="metal">METAL</span> version of</h4>
+        <h4 class="simon">SIMON</h4>
         <h4>by Sean Fallmann</h4>
         <div id="play-game-pick">
           <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 200 200">
