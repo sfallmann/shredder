@@ -92,12 +92,12 @@
       position: absolute;
       width: 40px;
       height: 40px;
-      left: 10px;
-      top: 10px;
+      left: 6px;
+      top: 6px;
       z-index: 100;
     }
 
-    #game-title {
+    #game-title, #how-to-play-img {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -125,6 +125,23 @@
 
     .metal {
       font-family: 'New Rocker', cursive;
+    }
+
+    #how-to-play-wrapper {
+      text-align: center;
+    }
+    #how-to-play-btn {
+      position: relative;
+      z-index: 100;      
+      color: white;
+      border: 2px solid #ffffff;
+      border-radius: 5px;
+    }
+
+    #how-to-play-img {
+      z-index: 110;
+      max-width: 500px;
+      width: 100vw;
     }
 
     #play-game-pick svg{
@@ -177,8 +194,11 @@
 <body>
   <header>
     <img id="fullscreen"  src="assets/img/fullscreen.svg" alt="Fullscreen Mode" onclick="launchIntoFullscreen(document.documentElement);">
-    </div>
     <img id="audio-control" src="assets/img/audio-on.svg" alt="Audio On"/>
+    <div id="how-to-play-wrapper">
+      <button id="how-to-play-btn" onclick="howToPlay();">How to Play</button>
+      <img class="hide" id="how-to-play-img" src="assets/img/how-to-play.svg" alt="How to Play" onclick="howToPlay();">  
+    </div>
   </header>
   <section id="game-title" class="container">
     <div class="row">
@@ -217,6 +237,10 @@
   <script src="assets/js/simon.js"></script>  
   <script src="assets/js/app.js"></script>
   <script>
+
+    function howToPlay(){
+      $('#how-to-play-img').toggleClass("hide");
+    }
 
     // Thank you David Walsh! https://davidwalsh.name/fullscreen
     function launchIntoFullscreen(element) {
@@ -279,6 +303,7 @@
               logoAnimation.pause();
               vaiShred.stop();
               TweenMax.to('#game-title', 2, {opacity: 0, display: 'none'});
+              TweenMax.to('#how-to-play-wrapper', 2, {opacity: 0, display: 'none'});
               TweenMax.to('#game-main', 2, {opacity: 1, display: 'block', delay:2.5});
               playGame();
             })
