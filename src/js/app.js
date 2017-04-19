@@ -2,28 +2,31 @@ function playGame() {
   const game = new Simon();
   let clickedColor;
   let clickCheck;
-  const speed = 500;
+  let speed = 1;
+  const rate = .00725;
+
+  //var readyAnimation = TweenMax.to('.color-btn', .5, {"fill-opacity": .99, repeat: -1, yoyo: true});
 
   const sound = {
     _audioFiles: {
       blue: new Howl({
-        src: ['assets/audio/blue-sound.mp3']
+        src: ['assets/audio/blue-3.mp3']
       }),
       red: new Howl({
-        src: ['assets/audio/red-sound.mp3']
+        src: ['assets/audio/red-3.mp3']
       }),
       green: new Howl({
-        src: ['assets/audio/green-sound.mp3']
+        src: ['assets/audio/green-3.mp3']
       }),
       yellow: new Howl({
-        src: ['assets/audio/yellow-sound.mp3']
+        src: ['assets/audio/yellow-3.mp3']
       }),
       mistake: new Howl({
         src: ['assets/audio/mistake-sound.mp3']
       })
     },
-    play: function play(key, cb) {
-
+    play: function play(key, speed, cb) {
+      console.log(speed)
       this._audioFiles[key].once('end', () => {
         toggleLight(key);
 
@@ -32,6 +35,7 @@ function playGame() {
         }
       });
       toggleLight(key);
+      this._audioFiles[key].rate(speed);
       this._audioFiles[key].play();
 
     },
@@ -93,7 +97,7 @@ function playGame() {
     console.log('start button clicked');
     const config = {
       mode: gameMode(),
-      maxTurns: 3,
+      maxTurns: 10,
       playerInputCb,
       gameOverCb,
       roundLostCb,
@@ -105,8 +109,8 @@ function playGame() {
     timeouts.clearAll();
     removeClickable();
     updateCount(game.count());
-    delaySequence(game.pattern(), 250, speed - (game.count() * 20));
-  })
+    delaySequence(game.pattern(), 250, 0);
+  });
 
   $('.color-btn').click(function() {
     console.log($(this).attr('id'), ' clicked');
@@ -123,7 +127,7 @@ function playGame() {
   }
 
   function continueRoundCb() {
-    sound.play(clickedColor, function() {
+    sound.play(clickedColor, speed, function() {
       $messages.text('Keep going!');
       addClickable();
       trackPlayerResponse();
@@ -132,14 +136,15 @@ function playGame() {
   }
 
   function roundWonCb() {
-    sound.play(clickedColor, function() {
+    speed = ((game.count() + 1) * rate) + 1;
+    sound.play(clickedColor, speed, function() {
       timeouts.clearAll();
       clickedColor = '';
       updateCount(game.count());
       $messages.text('You did it! Here\'s a new sequence');
       console.log('round-won');
 
-      delaySequence(game.pattern(), 250, speed - (game.count() * 20));
+      delaySequence(game.pattern(), 250, 0);
     });
   }
 
@@ -152,8 +157,8 @@ function playGame() {
     } else {
       $messages.text('You didn\'t click anything!');
     }
-    sound.play('mistake', function() {
-      delaySequence(game.pattern(), 250, 500);
+    sound.play('mistake', 1, function() {
+      delaySequence(game.pattern(), 250, 0);
       console.log('round-lost');
     });
   }
@@ -163,13 +168,13 @@ function playGame() {
     const msg = 'Game over! ' + status + ': Starting new game';
     console.log('game-over!', status);
     if (status === GAME_WON) {
-      sound.play(clickedColor, function() {
+      sound.play(clickedColor, speed, function() {
         $messages.text(msg);
         alert('starting a new game');
         $('#start').trigger('click');
       });
     } else {
-      sound.play('mistake', function() {
+      sound.play('mistake', 1, function() {
         $messages.text(msg);
         alert('starting a new game');
         $('#start').trigger('click');
@@ -188,10 +193,10 @@ function playGame() {
     console.log('sequence delay: ', delay);
     if (pattern.length) {
       const color = pattern.shift();
-      sound.play(color, function() {
+      sound.play(color, speed, function() {
         timeouts.ids.push(setTimeout(() => {
           playSequence(pattern, delay);
-        }, delay));
+        }, 0));
       });
 
     } else {
