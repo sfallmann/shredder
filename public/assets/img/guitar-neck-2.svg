@@ -176,8 +176,9 @@
      id="text4523">Strict</text>
   <ellipse
      id="strict-btn"
+     data-strict="false"
+     class="transparent"
      transform="matrix(-0.857492, 0.514491, -0.514494, -0.857494, 494.0146, 445.133635)"
-     style="stroke-width: 3; stroke: rgb(255, 255, 255); fill: rgba(255, 255, 255, 0);"
      cx="307.793"
      cy="155.169"
      ry="11.779"

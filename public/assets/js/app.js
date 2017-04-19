@@ -61,11 +61,16 @@ function playGame() {
 
   var $messages = $('#messages');
 
+  $('#strict-btn').click(function () {
+    var strict = !$(this).data('strict');
+    $(this).data('strict', strict);
+    $(this).toggleClass('opaque').toggleClass('transparent');
+  });
+
   function gameMode() {
-    if ($('[name=strict]').is(':checked')) {
+    if ($('#strict-btn').data('strict')) {
       return STRICT;
     }
-
     return NORMAL;
   }
 

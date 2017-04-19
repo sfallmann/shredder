@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css?family=New+Rocker|Play" rel="stylesheet">  
   <link href="assets/libs/skeleton/skeleton.css" rel="stylesheet"/>
   <style>
-    body {
+    html {
       color: white;
       /* https://uigradients.com/#ShadowNight */
       background: #000000;  /* fallback for old browsers */
@@ -33,19 +33,19 @@
     }
 
     #blue {
-      fill: #201dbd;
+      fill: #1D83FF;
     }
 
     #red {
-      fill:#ff0000;
+      fill: #F51147;
     }
 
     #green {
-      fill: #018025;
+      fill: #11FF29;
     }
 
     #yellow {
-      fill:#eaff00;
+      fill: #FFDA4D;
     }        
 
     .light-on {
@@ -56,8 +56,12 @@
       fill-opacity: 0.25;
     }
 
-    .nocolor {
-      opacity: .5;
+    .opaque {
+      fill-opacity: 1;
+    }  
+
+    .transparent {
+      fill-opacity: 0;
     }
 
     .color {
@@ -72,6 +76,13 @@
     .clickable {
       border: 4px solid lightgrey;
     }
+
+    #strict-btn {
+      stroke-width: 3; 
+      stroke: #ffffff;      
+      fill: #ffffff;
+    }  
+
     #audio-control {
       width: 40px;
       height: 40px;
@@ -79,6 +90,16 @@
       right: 10px;
       top: 10px;
       z-index: 100;
+    }
+
+    #fullscreen {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      z-index: 100;
+      background: none;
+      color: white;
+      border: 2px solid white;
     }
 
     #audio-control:hover {
@@ -158,6 +179,9 @@
 </head>
 <body>
   <header>
+    <button id="fullscreen" alt="Fullscreen Mode" onclick="launchIntoFullscreen(document.documentElement);">
+      Fullscreen
+    </button>
     <img id="audio-control" src="assets/img/audio-on.svg" alt="Audio On"/>
   </header>
   <section id="game-title" class="container">
@@ -197,6 +221,19 @@
   <script src="assets/js/simon.js"></script>  
   <script src="assets/js/app.js"></script>
   <script>
+
+    // Thank you David Walsh! https://davidwalsh.name/fullscreen
+    function launchIntoFullscreen(element) {
+      if(element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if(element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if(element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if(element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    }
 
     var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
     var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});    
