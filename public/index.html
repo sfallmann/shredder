@@ -32,37 +32,29 @@
       text-align: center;
     }
 
-    .blue {
-      background-color: #0000FF;
+    #blue {
+      fill: #201dbd;
     }
 
-    .lightblue {
-      background-color: #ADD8E6;
+    #red {
+      fill:#ff0000;
     }
 
-    .red {
-      background-color: #FF0000;
-    }
-    
-    .lightred {
-      background-color: #FFA07A;
+    #green {
+      fill: #018025;
     }
 
-    .green {
-      background-color: #008000;
-    }
-
-    .lightgreen {
-      background-color: #90EE90;
-    }
-
-    .yellow {
-      background-color: #FFFF00;
+    #yellow {
+      fill:#eaff00;
     }        
 
-    .lightyellow {
-      background-color: #FFFFE0;
-    }      
+    .light-on {
+      fill-opacity: 0.99;
+    }
+
+    .light-off {
+      fill-opacity: 0.25;
+    }
 
     .nocolor {
       opacity: .5;
@@ -144,6 +136,18 @@
       display: none;
       opacity: 0;
     }
+    #play-area {
+      height: 95vh;
+      width: 100%;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    #play-area svg{
+      display: block;
+      margin: 0 auto;
+      height: 95vh;
+    }
 
     #messages {
       height: 100px;
@@ -185,27 +189,7 @@
     </div>
   </section>
   <section id="game-main" class="container">
-    <div class="row">
-      <div class="two columns">Count: <div id="count">--</div></div>
-      <div id="messages" class="ten columns"></div>
-    </div>
-    <div class="row">
-      <div id="blue-btn" data-color="blue" class="three columns blue color"></div>  
-      <div id="red-btn" data-color="red" class="three columns red color"></div>
-      <div id="green-btn" data-color="green" class="three columns green color"></div>
-      <div id="yellow-btn" data-color="yellow" class="three columns yellow color"></div>                        
-    </div>
-    <div class="row">
-      <div class="four columns">
-        <label>On <input type="checkbox" name="on"></label>
-      </div>
-      <div class="four columns">
-        <label>Strict <input type="checkbox" name="strict"></label>
-      </div>
-      <div class="four columns">
-        <input type="button" id="start" value="Start!">
-      </div>            
-    </div>
+    <div id="play-area"></div>
   </section>
   <script src="assets/libs/howler.js/howler.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
@@ -246,7 +230,7 @@
       title: {
         load: function load(){
 
-
+          gameScreens.main.load();
 
           $.get('assets/img/shredder-logo-2.svg', function(doc) {
             $('#logo').html($(doc.querySelector('svg')));
@@ -263,6 +247,7 @@
               vaiShred.stop();
               TweenMax.to('#game-title', 2, {opacity: 0, display: 'none'});
               TweenMax.to('#game-main', 2, {opacity: 1, display: 'block', delay:2.5});
+              playGame();
             })
 
             var logoAnimation = {
@@ -299,6 +284,13 @@
               logoAnimation.restart();
             });      
             thudSound.play();
+          });
+        }
+      },
+      main: {
+        load: function load() {
+          $.get('assets/img/guitar-neck-2.svg', function(doc) {
+            $('#play-area').html($(doc.querySelector('svg')));
           });
         }
       }

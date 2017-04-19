@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:bx="https://boxy-svg.com"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="guitar-neck"
+   viewBox="0 0 200 500"
+   preserveAspectRatio="xMidYMid meet"
+   version="1.1"
+   sodipodi:docname="guitar-neck-2.svg"
+   inkscape:version="0.92.1 r15371">
+  <metadata
+     id="metadata4529">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview4527"
+     showgrid="false"
+     inkscape:pagecheckerboard="true"
+     inkscape:zoom="1.696"
+     inkscape:cx="-90.579518"
+     inkscape:cy="240.72206"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="guitar-neck" />
+  <defs
+     id="defs4487">
+    <symbol
+       id="symbol-0"
+       viewBox="0 0 100 100" />
+    <style
+       id="bx-google-fonts">
+      @import url(https://fonts.googleapis.com/css?family=New+Rocker:400);
+    </style>
+  </defs>
+  <g
+     id="guitar-body"
+     transform="matrix(1, 0, 0, 1, -138.92395, -0.635939)">
+    <rect
+       style="stroke-linejoin: round; stroke: rgb(255, 255, 255); stroke-width: 4; fill: rgba(255, 255, 255, 0);"
+       x="154"
+       y="-489.358"
+       width="172.182"
+       height="394.177"
+       transform="matrix(1, 0, 0, -1, 0, 0)"
+       id="rect4489" />
+    <path
+       d="M 325.656 121.078 C 325.656 121.078 156.051 121.078 155.579 121.078"
+       style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 4;"
+       id="path4491" />
+    <path
+       d="M 324.076 202.531 C 324.076 202.531 154.471 202.531 154 202.531"
+       style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 4;"
+       id="path4493" />
+    <path
+       d="M 326.182 288.839 C 326.182 288.839 156.577 288.839 156.106 288.839"
+       style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 4;"
+       id="path4495" />
+    <path
+       d="M 325.13 374.607 C 325.13 374.607 155.525 374.607 155.053 374.607"
+       style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 4;"
+       id="path4497" />
+    <path
+       d="M 326.182 451.206 C 326.182 451.206 156.577 451.206 156.106 451.206"
+       style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 4;"
+       id="path4499" />
+    <rect
+       transform="matrix(0.698518, 0.715593, -0.698721, 0.715802, 126.922501, -63.393947)"
+       x="278.309"
+       y="118.9"
+       width="28.645"
+       height="28.637"
+       style="fill: rgba(255, 250, 250, 0); stroke-width: 3; stroke: rgb(255, 255, 255);"
+       id="rect4501" />
+    <rect
+       transform="matrix(0.698516, 0.715592, -0.698721, 0.715802, 128.502926, 110.30078)"
+       x="278.309"
+       y="118.9"
+       width="28.645"
+       height="28.637"
+       style="fill: rgba(255, 250, 250, 0); stroke-width: 3; stroke: rgb(255, 255, 255);"
+       id="rect4503" />
+  </g>
+  <g
+     id="button-grp"
+     transform="matrix(1, 0, 0, 1, -138.92395, -0.635939)">
+    <rect
+       id="green"
+       class="color-btn light-off"
+       x="155.062"
+       y="290.45599"
+       width="168.299"
+       height="81.994003"  />
+    <rect
+       id="yellow"
+       class="color-btn light-off"
+       x="156.14101"
+       y="377.034"
+       width="168.299"
+       height="71.204002"  />
+    <rect
+       id="blue"
+       class="color-btn light-off"
+       x="156.14101"
+       y="123.774"
+       width="167.75999"
+       height="76.058998"  />
+    <rect
+       id="red"
+       class="color-btn light-off"
+       x="155.871"
+       y="204.41901"
+       width="168.299"
+       height="82.532997"  />
+  </g>
+  <rect
+     style="fill: rgb(216, 216, 216);"
+     id="rect4511" />
+  <g
+     id="start-btn"
+     transform="matrix(1, 0, 0, 1, -146.901703, -0.635939)">
+    <path
+       d="M 642 122.845 L 726.474 140.918 L 694.208 170.16 L 589.792 170.16 L 557.526 140.918 Z"
+       transform="matrix(0.999998, 0.001576, -0.001576, 0.999999, -396.016589, -83.638999)"
+       style="stroke-width: 5; stroke: rgb(255, 255, 255); fill: rgb(255, 255, 255);"
+       bx:shape="n-gon 642 149 88.821 26.155 5 0 1@93eeb4bb"
+       id="path4513" />
+    <text
+       x="216.517"
+       y="75.535"
+       style="fill: rgb(16, 1, 1); font-family: &quot;New Rocker&quot;; font-size: 26px; stroke: rgb(28, 37, 0); white-space: pre;"
+       id="text4515">Start</text>
+  </g>
+  <g
+     transform="matrix(1, 0, 0, 1, -146.901703, -0.635939)"
+     id="g4521">
+    <text
+       x="154.057"
+       y="28.275"
+       style="fill: rgb(255, 255, 255); font-family: &quot;New Rocker&quot;; font-size: 24px; white-space: pre;"
+       id="text4518">Count</text>
+    <text
+       id="count"
+       x="287.401"
+       y="29.423"
+       style="fill: rgb(255, 255, 255); font-family: &quot;New Rocker&quot;; font-size: 24px; white-space: pre;">--</text>
+  </g>
+  <text
+     x="27.461"
+     y="477.378"
+     style="fill: rgb(255, 255, 255); font-family: &quot;New Rocker&quot;; font-size: 24px; text-transform: uppercase; white-space: pre;"
+     id="text4523">Strict</text>
+  <ellipse
+     id="strict-btn"
+     transform="matrix(-0.857492, 0.514491, -0.514494, -0.857494, 494.0146, 445.133635)"
+     style="stroke-width: 3; stroke: rgb(255, 255, 255); fill: rgba(255, 255, 255, 0);"
+     cx="307.793"
+     cy="155.169"
+     ry="11.779"
+     rx="11.779" />
+</svg>
