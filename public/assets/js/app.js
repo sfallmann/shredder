@@ -4,10 +4,18 @@
 (function () {
   //##### Title Screen ####
 
+  $('#how-to-play-btn, #how-to-play-img').click(function () {
+    howToPlay();
+  });
+
   // toggles visibility of the game instructions
   function howToPlay() {
     $('#how-to-play-img').toggleClass("hide");
   }
+
+  $("#fullscreen").click(function () {
+    launchIntoFullscreen(document.documentElement);
+  });
 
   // Thank you David Walsh! https://davidwalsh.name/fullscreen
   function launchIntoFullscreen(element) {
