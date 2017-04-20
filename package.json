@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel src -d public/assets"
+    "build": "babel src -d public/assets",
+    "babel-watch": "babel-watch --watch simon.js"
   },
   "author": "",
   "license": "MIT",
@@ -13,7 +14,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
     "babel-preset-env": "^1.3.3",
+    "babel-watch": "^2.0.6",
     "bower": "^1.8.0",
     "gulp": "^3.9.1",
     "gulp-jasmine-browser": "^1.7.1",

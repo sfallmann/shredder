@@ -48,14 +48,6 @@
       fill: #FFDA4D;
     }        
 
-    .light-on {
-      fill-opacity: 0.99;
-    }
-
-    .light-off {
-      fill-opacity: 0.25;
-    }
-
     .opaque {
       fill-opacity: 1;
     }  
@@ -64,9 +56,8 @@
       fill-opacity: 0;
     }
 
-    .color {
-      height: 200px;
-      width: 100%;
+    .color-btn {
+      fill-opacity: 0.25;
     }
 
     .clickable {
@@ -97,7 +88,7 @@
       z-index: 100;
     }
 
-    #game-title, #how-to-play-img {
+    #game-title, #how-to-play-img, #messages {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -185,8 +176,15 @@
     }
 
     #messages {
-      height: 100px;
-      text-align: center;
+      z-index: 100;
+      background: black;
+      width: 100%;
+      padding: 25px;
+      border: 2px solid white;
+      border-radius: 10px;
+      font-size: 6em;
+      color: white;
+      text-align: center
     }
 
   </style>
@@ -230,6 +228,7 @@
   </section>
   <section id="game-main" class="container">
     <div id="play-area"></div>
+    <div id="messages" class="metal hide"></div>
   </section>
   <script src="assets/libs/howler.js/howler.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
@@ -238,123 +237,7 @@
   <script src="assets/js/app.js"></script>
   <script>
 
-    function howToPlay(){
-      $('#how-to-play-img').toggleClass("hide");
-    }
 
-    // Thank you David Walsh! https://davidwalsh.name/fullscreen
-    function launchIntoFullscreen(element) {
-      if(element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if(element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-      } else if(element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      } else if(element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-      }
-    }
-
-    var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
-    var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});    
-
-    var soundRegistry = {
-      sounds: [],
-      mute: function mute(value) {
-        Howler.mute(value);
-      },
-      muteStatus: false
-    };
-
-    soundRegistry.sounds.push(thudSound);
-    soundRegistry.sounds.push(vaiShred);
-
-    $('#audio-control').on("click", function() {
-      soundRegistry.muteStatus = !soundRegistry.muteStatus;
-
-      if (soundRegistry.muteStatus){
-        $(this).attr('src','assets/img/audio-off.svg');
-      } else {
-        $(this).attr('src','assets/img/audio-on.svg');
-      }
-
-      soundRegistry.mute(soundRegistry.muteStatus);
-      
-    });
-
-
-    var gameScreens = {
-      title: {
-        load: function load(){
-
-          gameScreens.main.load();
-
-          $.get('assets/img/shredder-logo-2.svg', function(doc) {
-            $('#logo').html($(doc.querySelector('svg')));
-            var $logo = $('#logo-text');  
-            var $logoPaths = $('#logo-text path');
-            var $shred = $logoPaths.slice(0,5);
-            var $der = $logoPaths.slice(5);
-            var $playGame = $('#play-game-pick svg');
-            var pickAnimation = TweenMax.to($playGame, 3, {rotationY:360, ease:Linear.easeNone, repeat:-1});
-
-            $playGame.on('click', function() {
-              pickAnimation.pause();
-              logoAnimation.pause();
-              vaiShred.stop();
-              TweenMax.to('#game-title', 2, {opacity: 0, display: 'none'});
-              TweenMax.to('#how-to-play-wrapper', 2, {opacity: 0, display: 'none'});
-              TweenMax.to('#game-main', 2, {opacity: 1, display: 'block', delay:2.5});
-              playGame();
-            })
-
-            var logoAnimation = {
-              timeline: new TimelineMax(),
-              init: function init() {
-                this.timeline.add(TweenMax.to($shred, 0, {"stroke-opacity": 1, "fill-opacity": 1}));
-                this.timeline.add(TweenMax.from($shred, .3, {y:-60}));
-                this.timeline.add(TweenMax.to($shred, .05, {y:-2}));
-                this.timeline.add(TweenMax.to($shred, .05, {y:0}));
-                this.timeline.add(TweenMax.to($shred, .05, {y:-1}));
-                this.timeline.add(TweenMax.to($shred, .05, {y:0}));     
-                this.timeline.add(TweenMax.to($der, .1, {"stroke-opacity": 1, "fill-opacity": 1})); 
-                this.timeline.add(TweenMax.from($der, .5, {y:-200,scale:6}));
-                this.timeline.add(TweenMax.to($('#by-line'), 1, {opacity: 1, delay: 1}));   
-                this.timeline.add(TweenMax.to($logoPaths, .6, {scale:1.035, repeat:-1, yoyo: true, delay: -.75}));
-                this.timeline.pause();          
-              },
-              play: function play() {
-                this.timeline.play();
-              },
-              pause: function pause() {
-                this.timeline.pause();
-              },              
-              restart: function restart() {
-                this.timeline.restart();
-              }
-            }
-            logoAnimation.init();
-            logoAnimation.play();
-            vaiShred.seek(2).play();
-            vaiShred.on('end', function() {
-              thudSound.play();
-              vaiShred.seek(2);
-              logoAnimation.restart();
-            });      
-            thudSound.play();
-          });
-        }
-      },
-      main: {
-        load: function load() {
-          $.get('assets/img/guitar-neck-2.svg', function(doc) {
-            $('#play-area').html($(doc.querySelector('svg')));
-          });
-        }
-      }
-    };
-    
-    gameScreens.title.load();
 
 
   </script>
