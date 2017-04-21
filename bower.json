@@ -18,9 +18,10 @@
   "dependencies": {
     "skeleton": "^2.0.4",
     "normalize-strings": "normalize#^1.1.0",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4"
   },
   "install": {
     "path": "public/assets/libs"
-  }  
+  }
 }

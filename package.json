@@ -1,13 +1,12 @@
 {
-  "name": "simon",
-  "version": "1.0.0",
+  "name": "shredder",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "build": "babel src -d public/assets",
-    "babel-watch": "babel-watch --watch simon.js"
+    "build": "babel src -d public/assets"
   },
-  "author": "",
+  "author": "Sean Fallmann",
   "license": "MIT",
   "dependencies": {
     "express": "^4.15.2"

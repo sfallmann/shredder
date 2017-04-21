@@ -9,10 +9,10 @@
 
   // toggles visibility of the game instructions
   function howToPlay(){
-    $('#how-to-play-img').toggleClass("hide");
+    $('#how-to-play-img').toggleClass('hide');
   }
 
-  $("#fullscreen").click(function() {
+  $('#fullscreen').click(function() {
     launchIntoFullscreen(document.documentElement);
   });
   
@@ -37,7 +37,7 @@
   var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});    
 
   // audio toggle button click event actions
-  $('#audio-control').on("click", function() {
+  $('#audio-control').on('click', function() {
     muteStatus = !muteStatus;
     if (muteStatus){
       $(this).attr('src','assets/img/audio-off.svg');
@@ -61,17 +61,19 @@
         // set the innerHTML of #logo to the svg in the loaded document
         $('#logo').html($(doc.querySelector('svg')));
         // the logo text "Shredder"
-        var $logo = $('#logo-text');  
+        const $logo = $('#logo-text');  
         // all the paths in the logo text
-        var $logoPaths = $('#logo-text path');
+        const $logoPaths = $('#logo-text path');
         // the "shred"" part of "Shredder"
-        var $shred = $logoPaths.slice(0,5);
+        const $shred = $logoPaths.slice(0, 5);
+        $shred.css('opacity', '0');
         // the "der"" part of "Shredder"
-        var $der = $logoPaths.slice(5);
+        const $der = $logoPaths.slice(5);
+        $der.css('opacity', '0');
         // the play game pick
-        var $playGame = $('#play-game-pick svg');
+        const $playGame = $('#play-game-pick svg');
         // the animation for the pick to make it rotate
-        var pickAnimation = TweenMax.to($playGame, 3, {rotationY:360, ease:Linear.easeNone, repeat:-1});
+        const pickAnimation = TweenMax.to($playGame, 3, {rotationY:360, ease:Linear.easeNone, repeat:-1});
 
         // click event action for the pick
         $playGame.on('click', function() {
@@ -93,24 +95,28 @@
         var logoAnimation = {
           timeline: new TimelineMax(),
           init: function init() {
-            this.timeline.add(TweenMax.to($shred, 0, {"stroke-opacity": 1, "fill-opacity": 1}));
-            this.timeline.add(TweenMax.from($shred, .3, {y:-60}));
-            this.timeline.add(TweenMax.to($shred, .05, {y:-2}));
-            this.timeline.add(TweenMax.to($shred, .05, {y:0}));
-            this.timeline.add(TweenMax.to($shred, .05, {y:-1}));
-            this.timeline.add(TweenMax.to($shred, .05, {y:0}));     
-            this.timeline.add(TweenMax.to($der, .1, {"stroke-opacity": 1, "fill-opacity": 1})); 
-            this.timeline.add(TweenMax.from($der, .5, {y:-200,scale:6}));
-            this.timeline.add(TweenMax.to($('#by-line'), 1, {opacity: 1, delay: 1}));   
-            this.timeline.add(TweenMax.to($logoPaths, .6, {scale:1.035, repeat:-1, yoyo: true, delay: -.75}));
-            this.timeline.pause();          
+            this.timeline.add(TweenMax.to($shred, 0, {'opacity': 1}));
+            this.timeline.add(TweenMax.from($shred, .3, {y: -60}));
+            this.timeline.add(TweenMax.to($shred, .05, {y: -2}));
+            this.timeline.add(TweenMax.to($shred, .05, {y: 0}));
+            this.timeline.add(TweenMax.to($shred, .05, {y: -1}));
+            this.timeline.add(TweenMax.to($shred, .05, {y: 0}));
+            this.timeline.add(TweenMax.to($der, .1, {'opacity': 1}));
+            this.timeline.add(TweenMax.from($der, .5, {y: -200, scale: 6}));
+            this.timeline.add(TweenMax.to($('#by-line'), 1, {
+              opacity: 1, delay: 1
+            }));
+            this.timeline.add(TweenMax.to($logoPaths, .6, {
+              scale: 1.035, repeat: -1, yoyo: true, delay: -.75
+            }));
+            this.timeline.pause();
           },
           play: function play() {
             this.timeline.play();
           },
           pause: function pause() {
             this.timeline.pause();
-          },              
+          },
           restart: function restart() {
             this.timeline.restart();
           }
@@ -126,7 +132,7 @@
           thudSound.play();
           vaiShred.seek(2);
           logoAnimation.restart();
-        });      
+        });
 
         // play the thud sound
         thudSound.play();
@@ -183,13 +189,20 @@
       // plays the audio value mapped to the passed in key
       // passes in the playback rate "speed" and also
       // passed in a callback to invoke after the audio completes
+      stop: function stop(key, cb) {
+        this._audioFiles[key].stop();
+        // if the callback is actually a function invoke it
+        if (typeof cb === 'function') {
+          // turn the colors light off
+          lightOff(key);
+          cb();
+        }
+      },
       play: function play(key, speed, cb) {
 
         this._audioFiles[key].once('end', () => {
-          // turn the colors light off 
           lightOff(key);
-          // if the callback is actually a function invoke it
-          if (typeof cb === 'function') {
+          if (cb) {
             cb();
           }
         });
@@ -201,6 +214,9 @@
         // play the audio
         this._audioFiles[key].play();
 
+      },
+      playing: function playing(key) {
+        return this._audioFiles[key].playing();
       },
       stop: function stop(key) {
         this._audioFiles[key].stop();
@@ -230,21 +246,21 @@
     };
 
     // flashes the lights on the colors to tell player they are clickable
-    var readyAnim = TweenMax.to('.color-btn', .5, {"fill-opacity": .99, repeat: -1, yoyo: true});
+    var readyAnim = TweenMax.to('.color-btn', .5, {'opacity': .99, repeat: -1, yoyo: true});
     readyAnim.pause();
 
     // turns the light on
     function lightOn(color) {
-      $("#" + color).css("fill-opacity", ".99");
-    }  
+      $('#' + color).css('opacity', '.99');
+    }
 
     // turns the light off
     function lightOff(color) {
-      $("#" + color).css("fill-opacity", ".25");
-    }   
+      $('#' + color).css('opacity', '.25');
+    }
 
     function allLightsOff(){
-      $('.color-btn').css("fill-opacity", ".25");
+      $('.color-btn').css('opacity', '.25');
     }
 
     // strick button click event actions
@@ -254,42 +270,40 @@
       $(this).toggleClass('opaque').toggleClass('transparent');
     });
 
-    $('#start-btn').click(() => {
+    function resetComponents() {
+      sound.stopAll();
+      timeouts.clearAll();
+      $messages.addClass('hide');
+      readyAnim.restart();
+      readyAnim.pause();
+      allLightsOff();
+      removeClickable();
+      updateCount(game.count());
+    }
 
+    $('#start-btn').on('click', () => {
       // sets the configuration for the game
       const config = {
         mode: gameMode(),
         maxTurns: 20,
-        playerInputCb,
-        gameOverCb,
-        roundLostCb,
-        roundWonCb,
-        continueRoundCb
+        playerInput,
+        gameOver,
+        roundLost,
+        roundWon,
+        continueRound
       };
-
-      // resets everything in case
-      // this is no the first game
-      sound.stopAll();
-      timeouts.clearAll();
-      $messages.addClass('hide');    
-      readyAnim.restart();
-      readyAnim.pause();
-      allLightsOff();
 
       // initializes the game with config options
       game.init(config);
-      // clears all the timeouts
-      timeouts.clearAll();
-      // makes the buttons unclickable
-      removeClickable();
-      // resets the game counter
-      updateCount(game.count());
 
+      // resets everything
+      resetComponents();
       $messages.text('Round ' + (game.count() + 1)).toggleClass('hide');
-      delaySequence(game.pattern(), 3500, function() {
-        $messages.toggleClass('hide');
-      });
-
+      timeouts.ids.push(setTimeout(() => {
+        delaySequence(game.pattern(), 0, function() {
+          $messages.toggleClass('hide');
+        });
+      }, 1500));
     });
 
     const $messages = $('#messages');
@@ -305,11 +319,14 @@
     // makes the buttons clickable
     function addClickable() {
       $('.color-btn').addClass('clickable');
+
     }
 
     // makes the buttons unclickable
     function removeClickable() {
       $('.clickable').removeClass('clickable');
+      readyAnim.restart();
+      readyAnim.pause();
     }
 
     // updates the counter value on screen
@@ -322,98 +339,93 @@
 
       // only do something if it's clickable
       if ($(this).hasClass('clickable')) {
-        // restart and pause the animation 
-        readyAnim.restart();
-        readyAnim.pause();
-        // make the buttons onclickable
-        removeClickable();
-        // get the id (which is equal to the color) of the clicked button
-        clickedColor = $(this).attr('id');
-        // clear the timeouts
+        if (clickedColor) {
+          sound.stop(clickedColor);
+          lightOff(clickedColor);
+        }
+
         timeouts.clearAll();
-        // calculate the results of this color selection
+        removeClickable();
+        clickedColor = $(this).attr('id');
+        sound.play(clickedColor, speed);
+        lightOn(clickedColor);
         game.turn();
       }
     });
 
-    // callback for getting the player's input
-    function playerInputCb() {
+    // function for getting the player's input
+    function playerInput() {
       return clickedColor;
     }
 
     // callback for when the round continues
-    function continueRoundCb() {
-      sound.play(clickedColor, speed, function() {
-        readyAnim.play();
-        addClickable();
-        trackPlayerResponse();
-        clickedColor = '';
-      });
+    function continueRound() {
+      trackPlayerResponse();
+      addClickable();
     }
 
-    // callback for when the round is won
-    function roundWonCb() {
+    function roundWon() {
+      timeouts.clearAll();
+      removeClickable();
+      clickedColor = '';
       speed = ((game.count() + 1) * rate) + 1;
-      sound.play(clickedColor, speed, function() {
-        timeouts.clearAll();
-        clickedColor = '';
-        updateCount(game.count());
+      updateCount(game.count());
+
+      setTimeout(() => {
         $messages.text('Good job!').toggleClass('hide');
         setTimeout(function() {
           $messages.text('Round ' + (game.count() + 1));
           delaySequence(game.pattern(), 2000, function() {
             $messages.toggleClass('hide');
-          });     
+          });
         }, 2000);
-      });
+      }, 2000);
     }
 
     // callback for when the round is lost
-    function roundLostCb() {
-      readyAnim.restart();
-      readyAnim.pause();
-      removeClickable();
+    function roundLost() {
       timeouts.clearAll();
+      removeClickable();
+      sound.stop(clickedColor);
+      clickedColor = '';
       $messages.text('Doh! Wrong riff!').toggleClass('hide');
       sound.play('mistake', 1, function() {
         setTimeout(function() {
           $messages.text('Let me show you how to play that again');
           delaySequence(game.pattern(), 2000, function() {
             $messages.toggleClass('hide');
-          });     
+          });
         }, 2000);
       });
     }
 
     // callback for gameover - passed in the status - win or loss
-    function gameOverCb(status) {
+    function gameOver(status) {
       removeClickable();
       if (status === GAME_WON) {
-        sound.play(clickedColor, speed, function() {
-          $messages.text('You did it! You played the entire song.').toggleClass('hide');
+        $messages.text('You did it! You played the entire song.').toggleClass('hide');
+        setTimeout(function() {
+          $messages.text('Let\'s play another game!');
           setTimeout(function() {
-            $messages.text('Let\'s play another game!');
-            setTimeout(function() {
-              $('#start-btn').trigger('click');
-            }, 2000);
+            $('#start-btn').trigger('click');
           }, 2000);
-        });
+        }, 2000);
       } else {
-        sound.play('mistake', 1, function() {
-          $messages.text('How \'bout we play a different song?').toggleClass('hide');
+        sound.stop(clickedColor);
+        $messages.text('How \'bout we play a different song?').toggleClass('hide');
+        setTimeout(function() {
+          $messages.text('Starting a new game');
           setTimeout(function() {
-            $messages.text('Starting a new game');
-            setTimeout(function() {
-              $('#start-btn').trigger('click');
-            }, 2000);  
+            $('#start-btn').trigger('click');
           }, 2000);
-        });
+        }, 2000);
       }
     }
 
     function delaySequence(pattern, startDelay, cb){
       setTimeout(() => {
         cb();
+        removeClickable();
         playSequence(game.pattern());
       }, startDelay);
     }

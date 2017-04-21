@@ -40,15 +40,15 @@ body * {
 }        
 
 .opaque {
-  fill-opacity: 1;
+  fill: #ffffff
 }  
 
 .transparent {
-  fill-opacity: 0;
+  fill: "none"
 }
 
 .color-btn {
-  fill-opacity: 0.25;
+  opacity: 0.25;
 }
 
 .clickable {
@@ -58,7 +58,7 @@ body * {
 #strict-btn {
   stroke-width: 3; 
   stroke: #ffffff;      
-  fill: #ffffff;
+  fill: "none"
 }  
 
 #audio-control {
@@ -90,12 +90,10 @@ body * {
   width: 100%;
   margin: auto;
   fill: #d12d2b;
-  fill-opacity: 0;
   stroke:#ffffff;      
   stroke-width: 1;
   stroke-miterlimit: 4;
   stroke-dasharray: 1000;
-  stroke-opacity: 0;
   position: relative;
   padding-top: 75px;
 }
@@ -169,11 +167,11 @@ body * {
 #messages {
   z-index: 100;
   background: black;
-  width: 280px;
-  padding: 10px;
+  width: 95vw;
+  padding: 2vw;
   border: 2px solid white;
   border-radius: 10px;
-  font-size: 2.25em;
+  font-size: 2.5em;
   color: white;
   text-align: center
 }

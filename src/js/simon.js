@@ -16,12 +16,12 @@ class Simon {
   init(config) {
     this.maxTurns = config.maxTurns;
     this.mode = config.mode;
-    this.playerInput = config.playerInputCb;
-    this.gameOver = config.gameOverCb;
-    this.roundWon = config.roundWonCb;
-    this.roundLost = config.roundLostCb;
-    this.continueRound = config.continueRoundCb;
-    this.playSound = config.playSoundCb;
+    this.playerInput = config.playerInput;
+    this.gameOver = config.gameOver;
+    this.roundWon = config.roundWon;
+    this.roundLost = config.roundLost;
+    this.continueRound = config.continueRound;
+    this.playSound = config.playSound;
     this._count = 0;
     this._status = '';
     this._matches = 0;
