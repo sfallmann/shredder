@@ -8,23 +8,23 @@
   });
 
   // toggles visibility of the game instructions
-  function howToPlay(){
+  function howToPlay() {
     $('#how-to-play-img').toggleClass('hide');
   }
 
   $('#fullscreen').click(function() {
     launchIntoFullscreen(document.documentElement);
   });
-  
+
   // Thank you David Walsh! https://davidwalsh.name/fullscreen
   function launchIntoFullscreen(element) {
-    if(element.requestFullscreen) {
+    if (element.requestFullscreen) {
       element.requestFullscreen();
-    } else if(element.mozRequestFullScreen) {
+    } else if (element.mozRequestFullScreen) {
       element.mozRequestFullScreen();
-    } else if(element.webkitRequestFullscreen) {
+    } else if (element.webkitRequestFullscreen) {
       element.webkitRequestFullscreen();
-    } else if(element.msRequestFullscreen) {
+    } else if (element.msRequestFullscreen) {
       element.msRequestFullscreen();
     }
   }
@@ -34,15 +34,19 @@
 
   // title screen audio
   var thudSound = new Howl({src: ['assets/audio/thud.mp3'], preload: true});
-  var vaiShred = new Howl({src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true});    
+  var vaiShred = new Howl({
+    src: ['assets/audio/vai-style-shred-2.mp3'],
+    preload: true,
+    loop: true
+  });
 
   // audio toggle button click event actions
   $('#audio-control').on('click', function() {
     muteStatus = !muteStatus;
-    if (muteStatus){
-      $(this).attr('src','assets/img/audio-off.svg');
+    if (muteStatus) {
+      $(this).attr('src', 'assets/img/audio-off.svg');
     } else {
-      $(this).attr('src','assets/img/audio-on.svg');
+      $(this).attr('src', 'assets/img/audio-on.svg');
     }
     Howler.mute(muteStatus);
   });
@@ -50,8 +54,7 @@
   // gameScreens object
   var gameScreens = {
 
-    loadTitle: function loadTitle(){
-      console.log(this)
+    loadTitle: function loadTitle() {
 
       // preload the main game screen
       this.loadMain();
@@ -61,7 +64,7 @@
         // set the innerHTML of #logo to the svg in the loaded document
         $('#logo').html($(doc.querySelector('svg')));
         // the logo text "Shredder"
-        const $logo = $('#logo-text');  
+        const $logo = $('#logo-text');
         // all the paths in the logo text
         const $logoPaths = $('#logo-text path');
         // the "shred"" part of "Shredder"
@@ -73,7 +76,11 @@
         // the play game pick
         const $playGame = $('#play-game-pick svg');
         // the animation for the pick to make it rotate
-        const pickAnimation = TweenMax.to($playGame, 3, {rotationY:360, ease:Linear.easeNone, repeat:-1});
+        const pickAnimation = TweenMax.to($playGame, 3, {
+          rotationY: 360,
+          ease: Linear.easeNone,
+          repeat: -1
+        });
 
         // click event action for the pick
         $playGame.on('click', function() {
@@ -86,10 +93,14 @@
           TweenMax.to('#game-title', 2, {opacity: 0, display: 'none'});
           TweenMax.to('#how-to-play-wrapper', 2, {opacity: 0, display: 'none'});
           // fade in the main game screen and set it's display so it renders
-          TweenMax.to('#game-main', 2, {opacity: 1, display: 'block', delay:2.5});
+          TweenMax.to('#game-main', 2, {
+            opacity: 1,
+            display: 'block',
+            delay: 2.5
+          });
           // initializes the game and game ui
           playGame();
-        })
+        });
 
         // the logo animation and log animation controls
         var logoAnimation = {
@@ -120,7 +131,7 @@
           restart: function restart() {
             this.timeline.restart();
           }
-        }
+        };
         // initialize the "keyframes" for the logo animation
         logoAnimation.init();
         // start it up!
@@ -143,6 +154,34 @@
     loadMain: function loadMain() {
       $.get('assets/img/guitar-neck-2.svg', function(doc) {
         $('#play-area').html($(doc.querySelector('svg')));
+      });
+    },
+    loadGameWon: function loadGameWon() {
+      const metalVictory = new Howl({
+        src: ['assets/audio/game-won.mp3'],
+        preload: true
+      });
+
+      $.get('assets/img/fire-and-horns.svg', function(doc) {
+
+        $('#game-won').html($(doc.querySelector('svg')));
+        const fireAnim = new TimelineMax();
+        fireAnim.to('#game-main', 1, {opacity: 0, display: 'none'}, 0);
+        fireAnim.to('#game-over', 1, {opacity: 1, display: 'block'}, 0);
+        fireAnim.from('#fire-and-horns', 4, {y: 1200}, 1);      
+        fireAnim.to("#fire-outline", 1, {
+          stroke: '#f1d23a',
+          opacity: .85,
+          repeat:-1,
+          yoyo: true,
+          ease: SteppedEase.config(20)
+        }, 1);          
+        metalVictory.play();
+
+        $('#game-over').on('click', function() {
+          location.reload();
+        });
+
       });
     }
 
@@ -201,8 +240,10 @@
       play: function play(key, speed, cb) {
 
         this._audioFiles[key].once('end', () => {
-          lightOff(key);
-          if (cb) {
+          // if the callback is actually a function invoke it
+          if (typeof cb === 'function') {
+            // turn the colors light off
+            lightOff(key);
             cb();
           }
         });
@@ -228,7 +269,7 @@
       // tracks all timeout ids
       ids: [],
       // iterates through all the ids and clears them
-      clearAll: function clearAll(){
+      clearAll: function clearAll() {
         this.ids.forEach((id) => {
           clearTimeout(id);
         });
@@ -237,7 +278,7 @@
       // clears [id] timeout and removes it from the ids array
       clear: function clear(id) {
         const index = this.ids.indexOf(id);
-        if (index > -1){
+        if (index > -1) {
           console.log(this.ids[index], clickCheck);
           clearTimeout(id);
           this.ids.splice(index, 1);
@@ -246,7 +287,11 @@
     };
 
     // flashes the lights on the colors to tell player they are clickable
-    var readyAnim = TweenMax.to('.color-btn', .5, {'opacity': .99, repeat: -1, yoyo: true});
+    var readyAnim = TweenMax.to('.color-btn', .5, {
+      'opacity': .99,
+      repeat: -1,
+      yoyo: true
+    });
     readyAnim.pause();
 
     // turns the light on
@@ -259,7 +304,7 @@
       $('#' + color).css('opacity', '.25');
     }
 
-    function allLightsOff(){
+    function allLightsOff() {
       $('.color-btn').css('opacity', '.25');
     }
 
@@ -369,11 +414,11 @@
       removeClickable();
       clickedColor = '';
       speed = ((game.count() + 1) * rate) + 1;
-      updateCount(game.count());
 
       setTimeout(() => {
         $messages.text('Good job!').toggleClass('hide');
         setTimeout(function() {
+          updateCount(game.count());
           $messages.text('Round ' + (game.count() + 1));
           delaySequence(game.pattern(), 2000, function() {
             $messages.toggleClass('hide');
@@ -386,7 +431,11 @@
     function roundLost() {
       timeouts.clearAll();
       removeClickable();
-      sound.stop(clickedColor);
+
+      if (clickedColor) {
+        sound.stop(clickedColor);
+      }
+
       clickedColor = '';
       $messages.text('Doh! Wrong riff!').toggleClass('hide');
       sound.play('mistake', 1, function() {
@@ -403,16 +452,21 @@
     function gameOver(status) {
       removeClickable();
       if (status === GAME_WON) {
-        $messages.text('You did it! You played the entire song.').toggleClass('hide');
+        $messages
+          .text('You did it! You played the entire song.')
+          .toggleClass('hide');
         setTimeout(function() {
-          $messages.text('Let\'s play another game!');
+          $messages.text('YOU ROCK!');
           setTimeout(function() {
-            $('#start-btn').trigger('click');
+            //$('#start-btn').trigger('click');
+            gameScreens.loadGameWon();
           }, 2000);
         }, 2000);
       } else {
         sound.stop(clickedColor);
-        $messages.text('How \'bout we play a different song?').toggleClass('hide');
+        $messages
+          .text('How \'bout we play a different song?')
+          .toggleClass('hide');
         setTimeout(function() {
           $messages.text('Starting a new game');
           setTimeout(function() {
@@ -422,7 +476,7 @@
       }
     }
 
-    function delaySequence(pattern, startDelay, cb){
+    function delaySequence(pattern, startDelay, cb) {
       setTimeout(() => {
         cb();
         removeClickable();

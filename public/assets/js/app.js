@@ -37,7 +37,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   // title screen audio
   var thudSound = new Howl({ src: ['assets/audio/thud.mp3'], preload: true });
-  var vaiShred = new Howl({ src: ['assets/audio/vai-style-shred-2.mp3'], preload: true, loop: true });
+  var vaiShred = new Howl({
+    src: ['assets/audio/vai-style-shred-2.mp3'],
+    preload: true,
+    loop: true
+  });
 
   // audio toggle button click event actions
   $('#audio-control').on('click', function () {
@@ -54,7 +58,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var gameScreens = {
 
     loadTitle: function loadTitle() {
-      console.log(this);
 
       // preload the main game screen
       this.loadMain();
@@ -76,7 +79,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // the play game pick
         var $playGame = $('#play-game-pick svg');
         // the animation for the pick to make it rotate
-        var pickAnimation = TweenMax.to($playGame, 3, { rotationY: 360, ease: Linear.easeNone, repeat: -1 });
+        var pickAnimation = TweenMax.to($playGame, 3, {
+          rotationY: 360,
+          ease: Linear.easeNone,
+          repeat: -1
+        });
 
         // click event action for the pick
         $playGame.on('click', function () {
@@ -89,7 +96,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           TweenMax.to('#game-title', 2, { opacity: 0, display: 'none' });
           TweenMax.to('#how-to-play-wrapper', 2, { opacity: 0, display: 'none' });
           // fade in the main game screen and set it's display so it renders
-          TweenMax.to('#game-main', 2, { opacity: 1, display: 'block', delay: 2.5 });
+          TweenMax.to('#game-main', 2, {
+            opacity: 1,
+            display: 'block',
+            delay: 2.5
+          });
           // initializes the game and game ui
           playGame();
         });
@@ -146,6 +157,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     loadMain: function loadMain() {
       $.get('assets/img/guitar-neck-2.svg', function (doc) {
         $('#play-area').html($(doc.querySelector('svg')));
+      });
+    },
+    loadGameWon: function loadGameWon() {
+      var metalVictory = new Howl({
+        src: ['assets/audio/game-won.mp3'],
+        preload: true
+      });
+
+      $.get('assets/img/fire-and-horns.svg', function (doc) {
+
+        $('#game-won').html($(doc.querySelector('svg')));
+        var fireAnim = new TimelineMax();
+        fireAnim.to('#game-main', 1, { opacity: 0, display: 'none' }, 0);
+        fireAnim.to('#game-over', 1, { opacity: 1, display: 'block' }, 0);
+        fireAnim.from('#fire-and-horns', 4, { y: 1200 }, 1);
+        fireAnim.to("#fire-outline", 1, {
+          stroke: '#f1d23a',
+          opacity: .85,
+          repeat: -1,
+          yoyo: true,
+          ease: SteppedEase.config(20)
+        }, 1);
+        metalVictory.play();
+
+        $('#game-over').on('click', function () {
+          location.reload();
+        });
       });
     }
 
@@ -204,8 +242,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       play: function play(key, speed, cb) {
 
         this._audioFiles[key].once('end', function () {
-          lightOff(key);
-          if (cb) {
+          // if the callback is actually a function invoke it
+          if (typeof cb === 'function') {
+            // turn the colors light off
+            lightOff(key);
             cb();
           }
         });
@@ -247,7 +287,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
 
     // flashes the lights on the colors to tell player they are clickable
-    var readyAnim = TweenMax.to('.color-btn', .5, { 'opacity': .99, repeat: -1, yoyo: true });
+    var readyAnim = TweenMax.to('.color-btn', .5, {
+      'opacity': .99,
+      repeat: -1,
+      yoyo: true
+    });
     readyAnim.pause();
 
     // turns the light on
@@ -369,11 +413,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       removeClickable();
       clickedColor = '';
       speed = (game.count() + 1) * rate + 1;
-      updateCount(game.count());
 
       setTimeout(function () {
         $messages.text('Good job!').toggleClass('hide');
         setTimeout(function () {
+          updateCount(game.count());
           $messages.text('Round ' + (game.count() + 1));
           delaySequence(game.pattern(), 2000, function () {
             $messages.toggleClass('hide');
@@ -386,7 +430,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     function roundLost() {
       timeouts.clearAll();
       removeClickable();
-      sound.stop(clickedColor);
+
+      if (clickedColor) {
+        sound.stop(clickedColor);
+      }
+
       clickedColor = '';
       $messages.text('Doh! Wrong riff!').toggleClass('hide');
       sound.play('mistake', 1, function () {
@@ -405,9 +453,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (status === GAME_WON) {
         $messages.text('You did it! You played the entire song.').toggleClass('hide');
         setTimeout(function () {
-          $messages.text('Let\'s play another game!');
+          $messages.text('YOU ROCK!');
           setTimeout(function () {
-            $('#start-btn').trigger('click');
+            //$('#start-btn').trigger('click');
+            gameScreens.loadGameWon();
           }, 2000);
         }, 2000);
       } else {
